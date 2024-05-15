@@ -1,4 +1,4 @@
-Translation,declension,number,gender,nominative,genitive,dative,acusative,abblative
+translation,declension,number,gender,nominative,genitive,dative,acusative,ablative
 Gate,1,singular,feminine,porta,portae,portae,portam,porta
 Gates,1,plural,feminine,portae,portarum,portis,portas,portis
 Friend,2,singular,masculine,amicus,amici,amico,amicum,amico
