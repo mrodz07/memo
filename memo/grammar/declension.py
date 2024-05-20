@@ -12,24 +12,23 @@ class DeclensionType(Enum):
 # TODO: Check if terminations are correct depending on DeclensionType
 class Declension:
     cases = ["nominative", "genitive", "dative", "accusative", "ablative"]
-    dec = {}
 
     # sing for singular, plur for plural
     # dec for declensions
     def __init__(
         self,
         dec_type: DeclensionType,
-        sing_dec: dict[str, str],
-        plur_dec: dict[str, str],
+        sing: dict[str, str],
+        plur: dict[str, str],
     ):
         if (
-            self.check_dec_keys("Singular", sing_dec)
-            and self.check_dec_keys("Plural", plur_dec)
-            and self.check_no_empty_vals("Singular", sing_dec)
-            and self.check_no_empty_vals("Plural", plur_dec)
+            self.check_dec_keys("Singular", sing)
+            and self.check_dec_keys("Plural", plur)
+            and self.check_no_empty_vals("Singular", sing)
+            and self.check_no_empty_vals("Plural", plur)
         ):
-            self.sing_dec = sing_dec
-            self.plur_dec = plur_dec
+            self.sing = sing
+            self.plur = plur
             self.dec_type = dec_type
 
     # Check if the dec keys (cases) are correct.
