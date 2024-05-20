@@ -33,7 +33,7 @@ class Declension:
 
     # Check if the dec keys (cases) are correct.
     # case_num refers to case number
-    def check_dec_keys(self, case_num, dec_dic):
+    def check_dec_keys(self, case_num: str, dec_dic: dict[str, str]) -> bool:
         if len(self.cases) == len(dec_dic):
             for case in dec_dic:
                 if case not in self.cases:
@@ -46,7 +46,7 @@ class Declension:
             )
 
     # case_num refers to case number
-    def check_no_empty_vals(self, case_num, dec_dic):
+    def check_no_empty_vals(self, case_num: str, dec_dic: dict[str, str]) -> bool:
         for key, val in dec_dic.items():
             if val is None:
                 raise Exception(f"Empty value found on: {case_num}, {key}")
