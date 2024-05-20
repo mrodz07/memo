@@ -47,7 +47,7 @@ class Declension:
 
     # case_num refers to case number
     def check_no_empty_vals(self, case_num, dec_dic):
-        for key, val in dec_dic.values():
+        for key, val in dec_dic.items():
             if val is None:
                 raise Exception(f"Empty value found on: {case_num}, {key}")
 
