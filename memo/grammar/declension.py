@@ -34,9 +34,9 @@ class Declension:
     # Check if the dec keys (cases) are correct.
     # case_num refers to case number
     def check_dec_keys(self, case_num, dec_dic):
-        if self.cases == len(dec_dic):
+        if len(self.cases) == len(dec_dic):
             for case in dec_dic:
-                if case not in dec_dic.values():
+                if case not in self.cases:
                     raise Exception(f"Invalid case on {case_num}: {case}")
 
             return True
