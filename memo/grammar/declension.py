@@ -43,7 +43,7 @@ class Declension:
             return True
         else:  # There are only 5 latin cases
             raise Exception(
-                f"Incorrect dict length on {case_num}: Expected 4 got {len(dec_dic)}"
+                f"Incorrect dict length on {case_num}: Expected length 5 got {len(dec_dic)}"
             )
 
     # case_num refers to case number
