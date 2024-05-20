@@ -4,7 +4,7 @@ from memo.grammar.declension import DeclensionType
 from memo.grammar.declension import Declension
 
 correct_dec_data = {
-    "dec_type": DeclensionType(1),
+    "dec_type": DeclensionType["FIRST"],
     "sing": {
         "nominative": "porta",
         "genitive": "portae",
