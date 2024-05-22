@@ -12,67 +12,44 @@ class VocabularyUtils:
     Utilities to read vocabulary from csv files
     """
 
-    def read_nouns_csv(self, filePath: str):
+    def read_nouns_csv(self, file_path: str):
+        file_name_substr = "noun"
+        sing_data, sing_decl = ({}, {})
+        plur_data, plur_decl = ({}, {})
         nouns = []
 
-        if "noun" not in filePath:
-            raise Exception("Your file must have noun as part of its name")
+        self.check_substr_in_file_name(file_path, file_name_substr)
 
-        with open(filePath, newline="") as file:
+        with open(file_path, newline="") as file:
             reader = csv.DictReader(file)
-            # Check that each file has each attribute
 
-            for row in reader:
-                # Setting example gender and declension, will be overwritten
-                # TODO: Don't create new enums if they are arleady on these variables
-                gender = Gender["MASCULINE"]
-                declension = DeclensionType["FIRST"]
+            for i, row in enumerate(reader):
+                if (
+                    self.check_fields_not_none(row, reader.line_num)
+                    and self.check_declension(row["declension"], reader.line_num)
+                    and self.check_gender(row["gender"], reader.line_num)
+                    and self.check_number(row["number"], reader.line_num)
+                    # We need to save the declensions of the singular number, as we need both plural
+                    # and singular data to create a Noun object
+                    and i % 2 == 0
+                ):
+                    sing_data = row
+                    sing_decl = self.create_decl_dict(row)
+                else:
+                    plur_data = row
+                    plur_decl = self.create_decl_dict(row)
 
-                # Saving the line num as we read two by two
-                sing_line_num = reader.line_num
-                sing_data = row
-                sing_trans = sing_data["translation"]
-
-                plur_data = next(reader)
-                plur_line_num = reader.line_num
-                plur_trans = plur_data["translation"]
-
-                # Do checks on both lines to determine if they are valid
-                if self.check_declension(
-                    sing_data["declension"], sing_line_num
-                ) and self.check_declension(plur_data["declension"], plur_line_num):
-                    # Indeces in python start at 0
-                    # Declension enum for noun
-                    declension = DeclensionType(int(sing_data["declension"]) - 1)
-
-                if self.check_gender(
-                    sing_data["gender"], sing_line_num
-                ) and self.check_gender(plur_data["gender"], plur_line_num):
-                    # Gender enum for noun
-                    gender = Gender[sing_data["gender"].lower().upper()]
-
-                if self.check_number(
-                    sing_data["number"], sing_line_num
-                ) and self.check_number(plur_data["number"], plur_line_num):
-                    # Gender enum for noun
-                    # TODO: Add number to each declension object???
-                    pass
-
-                # Remove unnecessary dict keys, only the five declensions are left
-                for k in ["translation", "number", "declension", "gender"]:
-                    del sing_data[k]
-                    del plur_data[k]
-
-                nouns.append(
-                    Noun(
-                        declension,
-                        gender,
-                        sing_trans,
-                        sing_data,
-                        plur_trans,
-                        plur_data,
+                    nouns.append(
+                        Noun(
+                            # Indeces in python start with 0
+                            DeclensionType(int(sing_data["declension"]) - 1),
+                            Gender[sing_data["gender"].upper()],
+                            sing_data["translation"],
+                            sing_decl,
+                            plur_data["translation"],
+                            plur_decl,
+                        )
                     )
-                )
 
         return nouns
 
@@ -99,3 +76,23 @@ class VocabularyUtils:
             raise Exception(f"Invalid grammtical number on line {line_num}: {num}")
 
         return False
+
+    def check_substr_in_file_name(self, file_path: str, substr: str) -> bool:
+        if substr not in file_path:
+            raise Exception(f"Your file must have '{substr}' as part of its name")
+
+        return True
+
+    def check_fields_not_none(self, fields: dict, line_num: int) -> bool:
+        for _, val in fields.items():
+            if val is None:
+                raise Exception(f"Line {line_num} lacks all values")
+
+        return True
+
+    # decl as declention
+    def create_decl_dict(self, row_data: dict[str, str]) -> dict[str, str]:
+        new_row_data = row_data.copy()
+        for key in ["translation", "number", "declension", "gender"]:
+            del new_row_data[key]
+        return new_row_data
