@@ -41,7 +41,7 @@ def check_substr_in_file_name(file_path: str, substr: str) -> bool:
     return True
 
 
-def check_fields_not_none(fields: dict, line_num: int) -> bool:
+def check_dict_fields_not_none(fields: dict, line_num: int) -> bool:
     for _, val in fields.items():
         if val is None:
             raise Exception(f"Line {line_num} lacks all values")

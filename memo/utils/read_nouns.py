@@ -5,7 +5,7 @@ from ..grammar.gender import Gender
 from ..grammar.declension import DeclensionType
 from .vocabulary import (
     check_substr_in_file_name,
-    check_fields_not_none,
+    check_dict_fields_not_none,
     check_gender,
     check_number,
     check_declension,
@@ -26,7 +26,7 @@ def read_nouns_csv(file_path: str):
 
         for i, row in enumerate(reader):
             if (
-                check_fields_not_none(row, reader.line_num)
+                check_dict_fields_not_none(row, reader.line_num)
                 and check_declension(row["declension"], reader.line_num)
                 and check_gender(row["gender"], reader.line_num)
                 and check_number(row["number"], reader.line_num)
