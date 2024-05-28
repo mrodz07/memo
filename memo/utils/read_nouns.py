@@ -2,7 +2,7 @@ import csv
 
 from ..grammar.noun import Noun
 from ..grammar.gender import Gender
-from ..grammar.declension import DeclensionType
+from ..grammar.declension import DeclensionType, cases as dec_cases_lst
 from .vocabulary import (
     check_substr_in_file_name,
     check_dict_fields_not_none,
@@ -30,6 +30,7 @@ def read_nouns_csv(file_path: str):
                 and check_declension(row["declension"], reader.line_num)
                 and check_gender(row["gender"], reader.line_num)
                 and check_number(row["number"], reader.line_num)
+                and check_no_empty_dec_cases(row, reader.line_num)
                 # We need to save the declensions of the singular number, as we need both plural
                 # and singular data to create a Noun object
                 and i % 2 == 0

@@ -1,3 +1,5 @@
+from .cases import Cases
+
 from __future__ import annotations
 from enum import Enum
 
@@ -7,12 +9,13 @@ class DeclensionType(Enum):
 
 
 # TODO: Add vocative and locative???
+cases = ["nominative", "genitive", "dative", "accusative", "ablative"]
+
+
 # TODO: Add irregular parameter for nouns that don't follow regular
 # terminations or don't have singular/plural number
 # TODO: Check if terminations are correct depending on DeclensionType
 class Declension:
-    cases = ["nominative", "genitive", "dative", "accusative", "ablative"]
-
     # sing for singular, plur for plural
     # dec for declensions
     def __init__(
@@ -34,9 +37,9 @@ class Declension:
     # Check if the dec keys (cases) are correct.
     # case_num refers to case number
     def check_dec_keys(self, case_num: str, dec_dic: dict[str, str]) -> bool:
-        if len(self.cases) == len(dec_dic):
+        if len(cases) == len(dec_dic):
             for case in dec_dic:
-                if case not in self.cases:
+                if case not in cases:
                     raise Exception(f"Invalid case on {case_num}: {case}")
 
             return True

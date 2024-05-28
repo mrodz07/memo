@@ -1,5 +1,5 @@
 from ..grammar.gender import Gender
-from ..grammar.declension import DeclensionType
+from ..grammar.declension import DeclensionType, cases as dec_cases_lst
 from ..grammar.number import GrammaticalNumber as GNum
 
 """
@@ -55,3 +55,11 @@ def create_decl_dict(row_data: dict[str, str]) -> dict[str, str]:
     for key in ["translation", "number", "declension", "gender"]:
         del new_row_data[key]
     return new_row_data
+
+
+def check_no_empty_strs_list(lst_str: list[str], line_num: int) -> bool:
+    # dec_cases as in declension cases
+    if all([True if lst_str != "" else False for dec_case in dec_cases_lst]):
+        return True
+    else:
+        raise Exception(f"Empty value found in case on line {line_num}")
